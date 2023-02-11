@@ -1,38 +1,46 @@
+const tolerance = 0.001
+
 // modifies the edges array.
-export function sortHalfEdges(edges){
+export function sortHalfEdges(edges) {
   // skip the last point, as the previous iteration should correct it.
-  edgeloop: for (let i = 0; i < edges.length -1; i++){
+  edgeloop: for (let i = 0; i < edges.length - 1; i++) {
     const edge = edges[i].edge
     const x = edge.vb.x
     const y = edge.vb.y
     // iterate over remaining edges
-    for(let j = i +1; j < edges.length; j++){
+    for (let j = i + 1; j < edges.length; j++) {
       const nEdge = edges[j].edge
-      if (nEdge.va.x == x && nEdge.va.y == y){
+      if (vertexMatch(nEdge.va, edge.vb)) {
         // we want this edge to be the next.
-        swapEdges(j, i+1, edges)
+        swapEdges(j, i + 1, edges)
         continue edgeloop
-      }else if(nEdge.vb.x == x && nEdge.vb.y == y){
+      } else if (vertexMatch(nEdge.vb, edge.vb)) {
+        // first swap points off edge. and then make it next in line.
         swapPoints(nEdge)
-        swapEdges(j, i+1, edges)
+        swapEdges(j, i + 1, edges)
         continue edgeloop
       }
       // else no match, continue
     }
-    //TODO: we have a tiny bug here where we can't find connecting edges. Could be a rounding issue.
-    throw new Error('could not find an edge that connects to: ', edge)
+    console.log(edge, edges)
+    throw new Error('could not find an edge that connects to.')
   }
 }
 
-function swapPoints(edge){
+function vertexMatch(pointA, pointB) {
+  return (pointA.x == pointB.x || Math.abs(pointA.x - pointB.x) < tolerance) // x is within tolerance
+    && (pointA.y == pointB.y || Math.abs(pointA.y - pointB.y) < tolerance) // y is within tolerance
+}
+
+function swapPoints(edge) {
   console.log("swapping points")
   const temp = edge.va
   edge.va = edge.vb
   edge.vb = temp
 }
 
-function swapEdges(from, to, edges){
-  if(from === to) return; // no need to swap
+function swapEdges(from, to, edges) {
+  if (from === to) return; // no need to swap
   console.log("swapping edges")
   const temp = edges[to]
   edges[to] = edges[from]
