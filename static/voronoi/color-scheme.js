@@ -1,18 +1,41 @@
-import { Color } from "./color"
+import { base } from "./color.js";
+
+function distance2(x1, y1, x2, y2) {
+  let dx = x1 - x2
+  let dy = y1 - y2
+  return dx * dx + dy * dy
+}
 
 export class ColorScheme{
-  shades = []
-  constructor(startColor, endColor, nrOfShades){
-    let div = nrOfShades - 1
-    let rStep = (startColor.r - endColor.r)/div
-    let gStep = (startColor.g - endColor.g)/div
-    let bStep = (startColor.b - endColor.b)/div
+  colorPositions = []
+  constructor(colorPositions){
+    this.colorPositions = colorPositions;
+  }
 
-    for (i = 0; i <= nrOfShades; i++){
-      let r = startColor.r + i*rStep;
-      let g = startColor.r + i*gStep;
-      let b = startColor.r + i*bStep;
-      this.shades.push(new Color(r,g,b))
+  getColor(x, y){
+    let squaredDistances = []
+    let totalSquaredDistance = 0;
+    for (let cp of this.colorPositions){
+      const d = distance2(x, y, cp.x, cp.y)
+      squaredDistances.push(d)
+      totalSquaredDistance += d;
     }
+
+    let invertedDistances = []
+    let totalInvertedDistance = 0;
+    for (let sq of squaredDistances){
+      const inv = totalSquaredDistance / sq
+      invertedDistances.push(inv)
+      totalInvertedDistance += inv;
+    }
+
+    let mixedColor = base()
+    for (let i = 0; i < this.colorPositions.length; i++){
+      const scalar = invertedDistances[i] / totalInvertedDistance
+      const scaledColor = this.colorPositions[i].color.scale(scalar)
+      mixedColor.add(scaledColor)
+    }
+
+    return mixedColor;
   }
 }
