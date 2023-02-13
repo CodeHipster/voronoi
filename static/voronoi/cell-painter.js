@@ -3,10 +3,9 @@ export class Painter{
     this.colorScheme = colorScheme;
   }
 
-  paint(diagram){
-    for (let cell of diagram.cells){
-      console.log("cell: ", cell)
-      cell.color = this.colorScheme.getColor(cell.site.x, cell.site.y)
+  paint(nodes){
+    for (let node of nodes){
+      node.color = this.colorScheme.getColor(node.x, node.y)
     }
   }
 }

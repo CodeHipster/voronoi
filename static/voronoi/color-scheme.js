@@ -36,6 +36,7 @@ export class ColorScheme{
       mixedColor.add(scaledColor)
     }
 
+    //TODO: Should we brighten the mixed colors a bit?
     return mixedColor;
   }
 }

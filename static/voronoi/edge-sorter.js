@@ -33,7 +33,6 @@ function vertexMatch(pointA, pointB) {
 }
 
 function swapPoints(edge) {
-  console.log("swapping points")
   const temp = edge.va
   edge.va = edge.vb
   edge.vb = temp
@@ -41,7 +40,6 @@ function swapPoints(edge) {
 
 function swapEdges(from, to, edges) {
   if (from === to) return; // no need to swap
-  console.log("swapping edges")
   const temp = edges[to]
   edges[to] = edges[from]
   edges[from] = temp

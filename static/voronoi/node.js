@@ -1,7 +1,10 @@
 export class Node {
-  constructor(x, y) {
+  // position & direction
+  constructor(x, y, dx, dy) {
     this.x = x
     this.y = y
+    this.dx = dx
+    this.dy = dy
     return this
   }
 
@@ -10,12 +13,12 @@ export class Node {
   }
 
   distance2(x, y) {
-    let dx = this.x - x
-    let dy = this.y - y
-    return dx * dx + dy * dy
+    let disx = this.x - x
+    let disy = this.y - y
+    return disx * disx + disy * disy
   }
 
   toString() {
-    return `Node: x=${this.x}, y=${this.y}`
+    return `Node: x=${this.x}, y=${this.y}, x=${this.dx}, y=${this.dy}`
   }
 };

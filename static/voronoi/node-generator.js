@@ -20,9 +20,19 @@ class NodeGenerator {
   }
 
   randomNode(range) {
+    // position
     let x = Math.floor(Math.random() * range.x)
     let y = Math.floor(Math.random() * range.y)
-    return new Node(x, y)
+
+    // direction
+    let dx = (Math.random() * 2) - 1
+    let dy = (Math.random() * 2) - 1
+
+    // normalize direction
+    const length = Math.sqrt(dx*dx + dy*dy)
+    dx = dx/length
+    dy = dy/length
+    return new Node(x, y, dx, dy)
   }
 
   validateNode(node, nodes, spacing2) {
