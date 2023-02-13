@@ -13,9 +13,9 @@ new Vue({
     }
   },
   methods: {
-    step(bbox, nodes, nodeMover, voronoi, ctx, spacing) {
+    step(bbox, nodes, nodeMover, voronoi, ctx, radius) {
       let diagram = voronoi.compute(nodes, bbox)
-      console.log(diagram)
+      // console.log(diagram)
 
       // draw cells
       ctx.strokeStyle = '#000000';
@@ -39,7 +39,7 @@ new Vue({
       // ctx.lineWidth = 1;
       // for (const cell of diagram.cells) {
       //   ctx.beginPath();
-      //   ctx.arc(cell.site.x, cell.site.y, spacing, 0, 2 * Math.PI);
+      //   ctx.arc(cell.site.x, cell.site.y, radius, 0, 2 * Math.PI);
       //   ctx.stroke()
       // }
 
@@ -53,10 +53,10 @@ new Vue({
     // generate nodes
     const range = { x: 800, y: 800 }
     const bbox = { xl: 0, xr: range.x, yt: 0, yb: range.y }
-    const spacing = 25
+    const nodeRadius = 25
     const timestep = 15 // step every x ms
-    let nodes = generator.generate(50, range, spacing * 2)
-    const nodeMover = new NodeMover(spacing, timestep)
+    let nodes = generator.generate(100, bbox, nodeRadius)
+    const nodeMover = new NodeMover(nodeRadius, timestep, bbox)
 
     // paint the cells
     const scheme = new ColorScheme([
@@ -74,18 +74,22 @@ new Vue({
     // create the voronoi diagram
     const voronoi = new Voronoi()
 
-    // test one step
-    // this.step(bbox, nodes, nodeMover, voronoi, ctx, spacing)
-
     // set interval
     const interval = setInterval(() => {
-      const start = window.performance.now()
-      this.step(bbox, nodes, nodeMover, voronoi, ctx, spacing)
-      const duration = window.performance.now() - start;
-      console.log('step duration: ', duration)
-      if (duration > timestep) {
-        // if the hardware is too slow. stop the interval.
+      try {
+        const start = window.performance.now()
+        this.step(bbox, nodes, nodeMover, voronoi, ctx, nodeRadius)
+        const duration = window.performance.now() - start;
+        // console.log('step duration: ', duration)
+        if (duration > timestep) {
+          // if the hardware is too slow. stop the interval.
+          console.log('calculations took too long on device, stopping animation.', duration)
+          clearInterval(interval)
+        }
+      } catch (error) {
+        console.log("something broke, stopping the animation", error)
         clearInterval(interval)
+        return
       }
     }, timestep);
   },

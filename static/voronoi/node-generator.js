@@ -2,13 +2,13 @@ import { Node } from './node.js'
 
 class NodeGenerator {
   retries = 100;
-  generate(amount, range, spacing) {
+  generate(amount, bbox, radius) {
     let nodes = []
-    let spacing2 = spacing * spacing + spacing * spacing
+    let sqSpacing = (2*radius * 2*radius)
     loopAmount: for (let i = 0; i < amount; i++) {
       for (let t = 0; t < this.retries; t++) {
-        let node = this.randomNode(range)
-        if (this.validateNode(node, nodes, spacing2)) {
+        let node = this.randomNode(bbox, radius)
+        if (this.validateNode(node, nodes, sqSpacing, bbox)) {
           nodes.push(node)
           continue loopAmount
         }
@@ -19,10 +19,10 @@ class NodeGenerator {
     return nodes
   }
 
-  randomNode(range) {
+  randomNode(bbox, radius) {
     // position
-    let x = Math.floor(Math.random() * range.x)
-    let y = Math.floor(Math.random() * range.y)
+    let x = Math.floor(Math.random() * ((bbox.xr - radius) - (bbox.xl+ radius))) + bbox.xl + radius
+    let y = Math.floor(Math.random() * ((bbox.yb - radius) - (bbox.yt + radius))) + bbox.yt + radius
 
     // direction
     let dx = (Math.random() * 2) - 1
@@ -30,15 +30,16 @@ class NodeGenerator {
 
     // normalize direction
     const length = Math.sqrt(dx*dx + dy*dy)
-    dx = dx/length
-    dy = dy/length
+    dx /= length
+    dy /= length
+
     return new Node(x, y, dx, dy)
   }
 
-  validateNode(node, nodes, spacing2) {
+  validateNode(node, nodes, sqSpacing) {
     for (const n of nodes) {
-      let distance2 = node.distance2Node(n)
-      if (distance2 <= spacing2) {
+      let sqDistance = node.distance2Node(n)
+      if (sqDistance <= sqSpacing) {
         return false
       }
     }

@@ -1,4 +1,4 @@
-const tolerance = 0.001
+const tolerance = 0.00001
 
 // modifies the edges array.
 export function sortHalfEdges(edges) {
