@@ -15,7 +15,6 @@ new Vue({
   methods: {
     step(bbox, nodes, nodeMover, voronoi, ctx, radius) {
       let diagram = voronoi.compute(nodes, bbox)
-      // console.log(diagram)
 
       // draw cells
       ctx.strokeStyle = '#000000';
@@ -44,8 +43,7 @@ new Vue({
       // }
 
       nodeMover.moveNodes(diagram)
-
-      //TODO: this shouldn't impact the nodes :|
+      
       voronoi.recycle(diagram);
     }
   },
