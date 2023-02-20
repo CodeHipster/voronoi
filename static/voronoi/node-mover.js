@@ -60,9 +60,10 @@ function bounce(node1, node2) {
   // node bounce does not affect other sphere.
 }
 
+// TODO: add speed
 export class NodeMover {
   // space between nodes (sphere), timestep in ms
-  constructor(radius, timestep, bbox) {
+  constructor(radius, timestep, bbox, speed) {
     // spacing squared, to avoid sqrt
     this.bbox = bbox
     this.nodeRadius = radius
@@ -71,7 +72,7 @@ export class NodeMover {
     this.timestep = timestep
     const stepsPerSecond = (1000 / timestep)
     // velocity in x pixels per second
-    this.velocity = 3 / stepsPerSecond
+    this.velocity = speed / stepsPerSecond
   }
 
   // the diagram gives us neighbours, no sorting required :)

@@ -1,13 +1,7 @@
-// test the drawing speed of path fill of triangles vs drawing each pixel.
+// test the interpolation of the colors.
 
 import { Color } from "../voronoi/color.js";
 import { ColorScheme } from "../voronoi/color-scheme.js";
-
-// using a 800 x 800 grid
-
-// polygon fill duration: 0.09999999403953552
-// fill-vs-pixel.js:38 pixel fill duration: 486.40000000596046
-// about 5k times faster....
 
 export function colorSchemeTest(ctx) {
   const scheme = new ColorScheme([

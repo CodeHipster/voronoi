@@ -1,6 +1,6 @@
 import { Node } from './node.js'
 
-class NodeGenerator {
+export class NodeGenerator {
   retries = 100;
   generate(amount, bbox, radius) {
     let nodes = []
@@ -46,5 +46,3 @@ class NodeGenerator {
     return true;
   }
 }
-
-export default new NodeGenerator()
