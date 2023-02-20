@@ -1,10 +1,8 @@
-import { Color } from "../voronoi/color.js";
-import { VoronoiAnimation } from "../voronoi/voronoi-animation.js";
+import { Color } from "./voronoi/color.js";
+import { VoronoiAnimation } from "./voronoi/voronoi-animation.js";
 import { sortHalfEdges } from "./edge-sorter.js";
 
-new Vue({
-  el: '.root',
-  mounted() {
+function startVoronoi() {
     // get the canvas
     const ctx = document.getElementById("voronoi").getContext("2d")
     const stepFunction = function(diagram) {
@@ -37,9 +35,6 @@ new Vue({
     const boundingBox = { xl: 0, xr: 800, yt: 0, yb: 800 }
     const animation = new VoronoiAnimation(100, boundingBox, stepFunction, 6, colors)
     animation.start()
-  },
-  template: `
-      <canvas id="voronoi" width="800" height="800" style="border:1px solid #c3c3c3;">
-        Your browser does not support the canvas element.
-      </canvas>`
-})
+  }
+
+  startVoronoi()

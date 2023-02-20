@@ -1,4 +1,4 @@
-import { Voronoi } from "../rhill-voronoi.js";
+import { Voronoi } from "./rhill-voronoi.js";
 import { NodeGenerator } from "./node-generator.js";
 import { Painter } from "./cell-painter.js";
 import { ColorScheme } from "./color-scheme.js";
